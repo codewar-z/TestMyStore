@@ -26,14 +26,55 @@ class TestRegistration(unittest.TestCase):
 
     def test_Registration_with_additional_fields(self):
         reg_email = f'random{random.randint(1, 1000)}@gmail.com'
-        user_registration = UserWithAdditionalFields("TestUser", "User", reg_email, "password")
-        user_registration.register(self.browser)
+        company_builder = BuilderWithCompany("TestUser", "User", reg_email, "password")
+        director = Director()
+        director.construct(company_builder)
+        user = company_builder.user
+        print(user)
+        user.register(self.browser)
         self.browser.find_element_by_id(locator.submit_register).click()
 
     def tearDown(self):
         self.browser.find_element_by_css_selector(locator.logout).click()
         self.browser.close()
         self.browser.quit()
+
+
+class Director:
+    def __init__(self):
+        self._builder = None
+
+    def construct(self, builder):
+        self._builder = builder
+        self._builder.build_with_company()
+        self._builder.build_with_number()
+
+
+class Builder:
+    def __init__(self, first_name, last_name, email, password):
+        self.user = User(first_name, last_name, email, password)
+
+    def build_with_company(self):
+        pass
+
+    def build_with_number(self):
+        pass
+
+
+class BuilderWithCompany(Builder):
+    def build_with_company(self):
+        self.user.company = 'Techno India'
+
+    def build_with_number(self):
+        pass
+
+
+class BuilderWithNumber(Builder):
+    def build_with_company(self):
+        pass
+
+    def build_with_number(self):
+        self.user.number = '1234'
 
 
 class User(object):
@@ -63,16 +104,6 @@ class User(object):
         browser.find_element_by_id(locator.zip).send_keys(self.zip)
         browser.find_element_by_id(locator.country).send_keys(self.country)
         browser.find_element_by_id(locator.mobile).send_keys(self.mobile)
-
-
-class UserWithAdditionalFields(User):
-    def __init__(self,first_name, last_name, email, password):
-        self.company = 'Techno Logic'
-        User.__init__(self, first_name, last_name, email, password)
-
-    def register(self, browser):
-        User.register(self, browser)
-        browser.find_element_by_id(locator.company).send_keys(self.company)
 
 
 if __name__ == '__main__':
