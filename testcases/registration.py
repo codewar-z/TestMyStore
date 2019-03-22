@@ -10,6 +10,7 @@ browserList = {
     'chrome': Chrome
 }
 
+
 class TestRegistration(unittest.TestCase):
 
     def setUp(self):
@@ -19,13 +20,13 @@ class TestRegistration(unittest.TestCase):
 
     def test_Registration(self):
         reg_email = f'random{random.randint(1, 1000)}@gmail.com'
-        user_registration = RegisterUserWithOnlyMandatoryFields("TestUser", "User", reg_email, "password")
+        user_registration = User("TestUser", "User", reg_email, "password")
         user_registration.register(self.browser)
         self.browser.find_element_by_id(locator.submit_register).click()
 
     def test_Registration_with_additional_fields(self):
         reg_email = f'random{random.randint(1, 1000)}@gmail.com'
-        user_registration = RegisterUserWithAdditionalFields("TestUser", "User", reg_email, "password")
+        user_registration = UserWithAdditionalFields("TestUser", "User", reg_email, "password")
         user_registration.register(self.browser)
         self.browser.find_element_by_id(locator.submit_register).click()
 
@@ -35,7 +36,7 @@ class TestRegistration(unittest.TestCase):
         self.browser.quit()
 
 
-class RegisterUserWithOnlyMandatoryFields(object):
+class User(object):
     def __init__(self, first_name, last_name, email, password):
         self.first_name = first_name
         self.last_name = last_name
@@ -64,15 +65,14 @@ class RegisterUserWithOnlyMandatoryFields(object):
         browser.find_element_by_id(locator.mobile).send_keys(self.mobile)
 
 
-class RegisterUserWithAdditionalFields(RegisterUserWithOnlyMandatoryFields):
+class UserWithAdditionalFields(User):
     def __init__(self,first_name, last_name, email, password):
         self.company = 'Techno Logic'
-        RegisterUserWithOnlyMandatoryFields.__init__(self, first_name, last_name, email, password)
+        User.__init__(self, first_name, last_name, email, password)
 
     def register(self, browser):
-        RegisterUserWithOnlyMandatoryFields.register(self, browser)
+        User.register(self, browser)
         browser.find_element_by_id(locator.company).send_keys(self.company)
-        time.sleep(15)
 
 
 if __name__ == '__main__':
