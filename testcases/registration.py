@@ -19,13 +19,17 @@ class TestRegistration(unittest.TestCase):
 
     def test_Registration(self):
         reg_email = f'random{random.randint(1, 1000)}@gmail.com'
-        user_registration = RegisterUserWithOnlyMandatoryFields("TestUser", "User", reg_email, "password")
+        user_registration = RegisterUserWithOnlyMandatoryFields('TestUser', 'User', reg_email, 'password', '6th Main',
+                                                                'Indianapolis', 'Indiana', '46204', 'United States',
+                                                                '9192634580', 'test account')
         user_registration.register(self.browser)
         self.browser.find_element_by_id(locator.submit_register).click()
 
     def test_Registration_with_additional_fields(self):
         reg_email = f'random{random.randint(1, 1000)}@gmail.com'
-        user_registration = RegisterUserWithAdditionalFields("TestUser", "User", reg_email, "password")
+        user_registration = RegisterUserWithAdditionalFields('TestUser', 'User', reg_email, 'password', '6th Main',
+                                                             'Indianapolis', 'Indiana', '46204', 'United States',
+                                                             '9192634580', 'test account', 'Techno Logic')
         user_registration.register(self.browser)
         self.browser.find_element_by_id(locator.submit_register).click()
 
@@ -36,18 +40,18 @@ class TestRegistration(unittest.TestCase):
 
 
 class RegisterUserWithOnlyMandatoryFields(object):
-    def __init__(self, first_name, last_name, email, password):
+    def __init__(self, first_name, last_name, email, password, address, city, state, zip, country, mobile, alias):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.password = password
-        self.address = '6th Main'
-        self.city = 'xyz'
-        self.state = 'Indiana'
-        self.zip = '46204'
-        self.country = 'United States'
-        self.mobile = '9192634580'
-        self.alias = 'test account'
+        self.address = address
+        self.city = city
+        self.state = state
+        self.zip = zip
+        self.country = country
+        self.mobile = mobile
+        self.alias = alias
 
     def register(self, browser):
         browser.find_element_by_id(locator.email).send_keys(self.email)
@@ -65,9 +69,9 @@ class RegisterUserWithOnlyMandatoryFields(object):
 
 
 class RegisterUserWithAdditionalFields(RegisterUserWithOnlyMandatoryFields):
-    def __init__(self,first_name, last_name, email, password):
-        self.company = 'Techno Logic'
-        RegisterUserWithOnlyMandatoryFields.__init__(self, first_name, last_name, email, password)
+    def __init__(self,first_name, last_name, email, password, address, city, state, zip, country, mobile, alias, company):
+        self.company = company
+        RegisterUserWithOnlyMandatoryFields.__init__(self, first_name, last_name, email, password, address, city, state, zip, country, mobile, alias)
 
     def register(self, browser):
         RegisterUserWithOnlyMandatoryFields.register(self, browser)
