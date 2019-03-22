@@ -1,6 +1,6 @@
 signin = '.login'
-email = 'email'
-password = 'passwd'
+email_sign_in = 'email'
+password_sign_in = 'passwd'
 submit = 'SubmitLogin'
 account = '.account'
 logout = '.logout'

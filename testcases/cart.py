@@ -4,22 +4,21 @@ import time
 from selenium.webdriver import Firefox, Chrome
 import config.params as params
 
-browserList = {
-    'firefox': Firefox,
-    'chrome': Chrome
-}
-
 
 class TestCart(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.browser = browserList.get(params.browser)()
+        if params.browser == 'firefox':
+            cls.browser = Firefox()
+        elif params.browser == 'chrome':
+            cls.browser = Chrome()
+
         cls.browser.get(params.url)
 
         cls.browser.find_element_by_css_selector(locator.signin).click()
-        cls.browser.find_element_by_id(locator.email).send_keys(params.username)
-        cls.browser.find_element_by_id(locator.password).send_keys(params.password)
+        cls.browser.find_element_by_id(locator.email_sign_in).send_keys(params.username)
+        cls.browser.find_element_by_id(locator.password_sign_in).send_keys(params.password)
         cls.browser.find_element_by_id(locator.submit).click()
 
     def test_ValidLogin(self):
