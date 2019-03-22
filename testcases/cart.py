@@ -1,6 +1,7 @@
 import unittest
 import objects.locators as locator
 import time
+import random
 from selenium.webdriver import Firefox, Chrome
 import config.params as params
 
@@ -38,7 +39,8 @@ class TestCart(unittest.TestCase):
     #     self.assertEqual(self.browser.find_element_by_css_selector(locator.cart_quantity).text, '1')
 
     def test_Registration(self):
-        userRegistration = RegisterUserWithOnlyMandatoryFields("TestUser", "Users", "random300@gmail.com", "anything")
+        regEmail = f'random{random.randint(1,1000)}@gmail.com'
+        userRegistration = RegisterUserWithOnlyMandatoryFields("TestUser", "Users", regEmail, "anything")
         userRegistration.register(self.browser)
 
 
@@ -83,9 +85,6 @@ class RegisterUserWithOnlyMandatoryFields:
 
 
 # class RegisterUserWithAdditionalFields:
-
-
-
 
 if __name__ == '__main__':
     unittest.main()
