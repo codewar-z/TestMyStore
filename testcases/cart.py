@@ -45,9 +45,16 @@ class TestCart(unittest.TestCase):
     #     userRegistration.register(self.browser)
 
     def test_Registration(self):
-        regEmail = f'random{random.randint(1,1000)}@gmail.com'
-        userRegistration = RegisterUserWithOnlyMandatoryFields("TestUser", "Users", regEmail, "anything")
-        userRegistration.register(self.browser)
+        reg_email = f'random{random.randint(1,1000)}@gmail.com'
+        user_registration = RegisterUserWithOnlyMandatoryFields("TestUser", "Users", reg_email, "anything")
+        user_registration.register(self.browser)
+        self.browser.find_element_by_id(locator.submit_register).click()
+
+    def test_Registration_with_additional_fields(self):
+        reg_email = f'random{random.randint(1,1000)}@gmail.com'
+        user_registration = RegisterUserWithAdditionalFields("TestUser", "Users", reg_email, "anything")
+        user_registration.register(self.browser)
+        self.browser.find_element_by_id(locator.submit_register).click()
 
 
 
@@ -58,7 +65,7 @@ class TestCart(unittest.TestCase):
     #     cls.browser.quit()
 
 
-class RegisterUserWithOnlyMandatoryFields:
+class RegisterUserWithOnlyMandatoryFields(object):
     def __init__(self, first_name, last_name, email, password):
         self.first_name = first_name
         self.last_name = last_name
@@ -86,16 +93,16 @@ class RegisterUserWithOnlyMandatoryFields:
         browser.find_element_by_id(locator.country).send_keys(self.country)
         browser.find_element_by_id(locator.mobile).send_keys(self.mobile)
 
-        browser.find_element_by_id(locator.submit_register).click()
-
 
 class RegisterUserWithAdditionalFields(RegisterUserWithOnlyMandatoryFields):
-    def __init__(self):
+    def __init__(self,first_name, last_name, email, password):
         self.company = 'Techno Logic'
+        RegisterUserWithOnlyMandatoryFields.__init__(self, first_name, last_name, email, password)
 
     def register(self, browser):
-        browser.find_element_by_id(locator.company).sendlkeys(self.company)
-
+        RegisterUserWithOnlyMandatoryFields.register(self, browser)
+        browser.find_element_by_id(locator.company).send_keys(self.company)
+        time.sleep(15)
 
 if __name__ == '__main__':
     unittest.main()
