@@ -26,5 +26,6 @@ submit_register = 'submitAccount'
 
 
 title = 'id_gender1'
+company = 'company'
 
 

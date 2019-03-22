@@ -16,6 +16,8 @@ class TestCart(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.browser = browserList.get(params.browser)()
+        cls.browser.set_window_size(1024, 1366)
+        time.sleep(5)
         cls.browser.get(params.url)
 
         cls.browser.find_element_by_css_selector(locator.signin).click()
@@ -38,10 +40,15 @@ class TestCart(unittest.TestCase):
     #     self.browser.find_element_by_css_selector('.continue').click()
     #     self.assertEqual(self.browser.find_element_by_css_selector(locator.cart_quantity).text, '1')
 
+    # def test_Registration(self):
+    #     userRegistration = RegisterUserWithOnlyMandatoryFields("TestUser", "Users", "random300@gmail.com", "anything")
+    #     userRegistration.register(self.browser)
+
     def test_Registration(self):
         regEmail = f'random{random.randint(1,1000)}@gmail.com'
         userRegistration = RegisterUserWithOnlyMandatoryFields("TestUser", "Users", regEmail, "anything")
         userRegistration.register(self.browser)
+
 
 
     # @classmethod
@@ -66,7 +73,6 @@ class RegisterUserWithOnlyMandatoryFields:
         self.alias = 'test account'
 
     def register(self, browser):
-
         browser.find_element_by_id(locator.email).send_keys(self.email)
         browser.find_element_by_id(locator.submit_create).click()
         time.sleep(5)
@@ -80,11 +86,16 @@ class RegisterUserWithOnlyMandatoryFields:
         browser.find_element_by_id(locator.country).send_keys(self.country)
         browser.find_element_by_id(locator.mobile).send_keys(self.mobile)
 
-        # browser.find_element_by_id(locator.alias).send_keys(self.alias)
         browser.find_element_by_id(locator.submit_register).click()
 
 
-# class RegisterUserWithAdditionalFields:
+class RegisterUserWithAdditionalFields(RegisterUserWithOnlyMandatoryFields):
+    def __init__(self):
+        self.company = 'Techno Logic'
+
+    def register(self, browser):
+        browser.find_element_by_id(locator.company).sendlkeys(self.company)
+
 
 if __name__ == '__main__':
     unittest.main()
